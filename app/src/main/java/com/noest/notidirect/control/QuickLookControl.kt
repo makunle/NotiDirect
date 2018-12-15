@@ -8,6 +8,8 @@ object QuickLookControl {
 
     val kv = MiniCache.getCache("quicklook")
 
+    var mLocked = false
+
     private var mSbnList = LinkedHashMap<String, StatusBarNotification>()
 
     fun changeFocus(pkg: String, focus: Boolean) {
@@ -43,11 +45,15 @@ object QuickLookControl {
             }
         }
         mSbnList.clear()
+
+        mLocked = false
     }
 
     fun addPendingIntent(sbn: StatusBarNotification) {
-        mSbnList.put(sbn.packageName + sbn.id, sbn)
         kv.put(sbn.packageName, kv.getBoolean(sbn.packageName))
+        if (mLocked) {
+            mSbnList.put(sbn.packageName + sbn.id, sbn)
+        }
     }
 
     fun removePendingPkgToJump(sbn: StatusBarNotification) {
@@ -55,5 +61,6 @@ object QuickLookControl {
     }
 
     fun onLocked() {
+        mLocked = true
     }
 }

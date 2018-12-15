@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
 
         if (!notificationListenerEnable()) {
             openNotificationPermissionPage()
-//            finish()
         }
 
         val focusInfo = QuickLookControl.getNotiList()
