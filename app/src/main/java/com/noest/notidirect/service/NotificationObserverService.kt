@@ -13,7 +13,7 @@ import android.service.notification.StatusBarNotification
 import android.support.v4.app.NotificationCompat
 import com.noest.notidirect.R
 import com.noest.notidirect.activity.MainActivity
-import com.noest.notidirect.control.DirectJumpControl
+import com.noest.notidirect.control.QuickLookControl
 import com.noest.notidirect.receiver.UnlockReceiver
 import com.noest.notidirect.utils.LogX
 
@@ -21,31 +21,18 @@ class NotificationObserverService : NotificationListenerService() {
 
     val TAG = "NotificationObserverService"
 
-    val jumpPkgFilter = listOf(
-        "com.tencent.mobileqq",
-        "com.tencent.mm",
-        "com.tencent.tim"
-    )
-
     override fun onCreate() {
         super.onCreate()
         start()
     }
 
-    fun filter(pkg: String): Boolean {
-        return jumpPkgFilter.contains(pkg)
-    }
 
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
         LogX.d(TAG, "onNotificationPosted: " + sbn?.packageName)
 
-        if (!filter(sbn?.packageName.toString())) {
-            return
-        }
-
         sbn?.let {
-            DirectJumpControl.setPendingIntent(sbn.notification.contentIntent)
+            QuickLookControl.addPendingIntent(sbn)
         }
     }
 
@@ -53,12 +40,8 @@ class NotificationObserverService : NotificationListenerService() {
         super.onNotificationRemoved(sbn)
         LogX.d(TAG, "onNotificationRemoved: " + sbn?.packageName)
 
-        if (!filter(sbn?.packageName.toString())) {
-            return
-        }
-
         sbn?.let {
-            DirectJumpControl.removePendingPkgToJump()
+            QuickLookControl.removePendingPkgToJump(sbn)
         }
     }
 

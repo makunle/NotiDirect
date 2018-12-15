@@ -2,6 +2,7 @@ package com.noest.notidirect
 
 import android.app.Application
 import android.content.Context
+import com.noest.notidirect.utils.minicache.MiniCache
 
 class App : Application() {
     companion object {
@@ -11,8 +12,10 @@ class App : Application() {
         }
     }
 
-    init {
+    override fun onCreate() {
+        super.onCreate()
         app = this
+        MiniCache.init(cacheDir.absolutePath)
     }
 
 
