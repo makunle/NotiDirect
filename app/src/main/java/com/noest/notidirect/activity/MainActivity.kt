@@ -4,6 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.CompoundButton
 import com.noest.notidirect.R
 import com.noest.notidirect.adapter.AppInfo
@@ -63,5 +65,17 @@ class MainActivity : AppCompatActivity() {
             intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
         }
         startActivity(intent)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.quick_look_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.itemSetting -> openNotificationPermissionPage()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
