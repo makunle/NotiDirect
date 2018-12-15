@@ -16,12 +16,18 @@ object QuickLookControl {
 
     fun getNotiList(): Map<String, Boolean> {
         val map = kv.allBoolean
-        if (map.size == 0) {
-            map.put("com.tencent.mobileqq", false)
-            map.put("com.tencent.mm", false)
-            map.put("com.miui.sms", false)
-        }
+
+        map.optDefalut("com.tencent.mobileqq")
+        map.optDefalut("com.tencent.mm")
+        map.optDefalut("com.miui.sms")
+
         return map
+    }
+
+    fun MutableMap<String, Boolean>.optDefalut(pkg: String) {
+        if (!containsKey(pkg)) {
+            put(pkg, false)
+        }
     }
 
     fun filter(pkg: String): Boolean {
