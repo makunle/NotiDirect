@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        title = "开屏通知跳转"
+        title = getString(R.string.app_title)
 
         if (!notificationListenerEnable()) {
             openNotificationPermissionPage()

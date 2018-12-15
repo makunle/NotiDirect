@@ -3,4 +3,7 @@
     <string name="app_name">快阅</string>
     <string name="channel_name">进程保活</string>
     <string name="setting">设置</string>
+    <string name="notification_content">有消息时，亮屏后直接跳转到相应页面</string>
+    <string name="notification_title">通知跳转服务</string>
+    <string name="app_title">开屏通知跳转</string>
 </resources>

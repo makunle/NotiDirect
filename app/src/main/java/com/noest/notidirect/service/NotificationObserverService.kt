@@ -21,6 +21,8 @@ class NotificationObserverService : NotificationListenerService() {
 
     val TAG = "NotificationObserverService"
 
+    val CHANNEL_ID = "NotiDirect"
+
     override fun onCreate() {
         super.onCreate()
         start()
@@ -51,12 +53,12 @@ class NotificationObserverService : NotificationListenerService() {
         val intent = Intent(this, MainActivity::class.java)
         val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
 
-        val channelId = createNotificationChannel("NotiDirect", getString(R.string.channel_name))
+        val channelId = createNotificationChannel(CHANNEL_ID, getString(R.string.channel_name))
 
         val builder = NotificationCompat.Builder(this, channelId)
         val notification = builder.setContentIntent(pIntent)
-            .setContentTitle("亮屏通知跳转服务")
-            .setContentText("有及时消息时，亮屏后直接跳转到相应页面")
+            .setContentTitle(getString(R.string.notification_title))
+            .setContentText(getString(R.string.notification_content))
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_icon))
             .build()
         startForeground(1, notification)
