@@ -5,21 +5,24 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.ArrayAdapter
+import android.widget.CheckBox
+import android.widget.ImageView
+import android.widget.TextView
 import kotlinx.android.synthetic.main.app_item_layout.view.*
 
 data class AppInfo(
     val pkg: String,
     val name: String,
     val icon: Drawable,
-    val focus: Boolean
+    var focus: Boolean
 )
 
 class FocusAppAdapter(
     context: Context,
     val resource: Int,
     val appList: Array<AppInfo>,
-    val listener: CompoundButton.OnCheckedChangeListener
+    val listener: View.OnClickListener
 ) :
     ArrayAdapter<AppInfo>(context, resource, appList) {
 
@@ -43,7 +46,7 @@ class FocusAppAdapter(
         viewHolder.appChecked.isChecked = info.focus
         viewHolder.appIcon.setImageDrawable(info.icon)
 
-        viewHolder.appChecked.setOnCheckedChangeListener(listener)
+        viewHolder.appChecked.setOnClickListener(listener)
         viewHolder.appChecked.tag = position
 
         return view

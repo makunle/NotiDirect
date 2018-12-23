@@ -6,11 +6,13 @@ import android.provider.Settings
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.CompoundButton
+import android.view.View
+import android.widget.CheckBox
 import com.noest.notidirect.R
 import com.noest.notidirect.adapter.AppInfo
 import com.noest.notidirect.adapter.FocusAppAdapter
 import com.noest.notidirect.control.QuickLookControl
+import com.noest.notidirect.utils.LogX
 import com.noest.notidirect.utils.getAppInfo
 import com.noest.notidirect.utils.notificationListenerEnable
 import kotlinx.android.synthetic.main.activity_main.*
@@ -40,9 +42,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            val listener = CompoundButton.OnCheckedChangeListener { buttonView, isChecked ->
-                val position = buttonView.tag as Int
+            val listener = View.OnClickListener { view ->
+                val cb = view as CheckBox
+                val isChecked = cb.isChecked
+                val position = view.tag as Int
+                array.get(position).focus = isChecked
                 QuickLookControl.changeFocus(array[position].pkg, isChecked)
+                LogX.d(TAG, "change focus: " + position + " " + isChecked)
             }
 
             // list to select
