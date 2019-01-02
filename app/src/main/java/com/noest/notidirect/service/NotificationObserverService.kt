@@ -60,6 +60,7 @@ class NotificationObserverService : NotificationListenerService() {
             .setContentTitle(getString(R.string.notification_title))
             .setContentText(getString(R.string.notification_content))
             .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_icon))
+            .setSmallIcon(R.mipmap.ic_icon)
             .build()
         startForeground(1, notification)
     }
