@@ -34,7 +34,9 @@ class NotificationObserverService : NotificationListenerService() {
         LogX.d(TAG, "onNotificationPosted: " + sbn?.packageName)
 
         sbn?.let {
-            QuickLookControl.addPendingIntent(sbn)
+            if (sbn.notification.flags and Notification.FLAG_ONGOING_EVENT == 0) {
+                QuickLookControl.addPendingIntent(it)
+            }
         }
     }
 
@@ -43,37 +45,39 @@ class NotificationObserverService : NotificationListenerService() {
         LogX.d(TAG, "onNotificationRemoved: " + sbn?.packageName)
 
         sbn?.let {
-            QuickLookControl.removePendingPkgToJump(sbn)
+            if (sbn.notification.flags and Notification.FLAG_ONGOING_EVENT == 0) {
+                QuickLookControl.removePendingPkgToJump(sbn)
+            }
         }
     }
 
     fun start() {
         UnlockReceiver.regReceiver(this)
 
-        val intent = Intent(this, MainActivity::class.java)
-        val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
-
-        val channelId = createNotificationChannel(CHANNEL_ID, getString(R.string.channel_name))
-
-        val builder = NotificationCompat.Builder(this, channelId)
-        val notification = builder.setContentIntent(pIntent)
-            .setContentTitle(getString(R.string.notification_title))
-            .setContentText(getString(R.string.notification_content))
-            .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_icon))
-            .setSmallIcon(R.mipmap.ic_icon)
-            .build()
-        startForeground(1, notification)
+//        val intent = Intent(this, MainActivity::class.java)
+//        val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
+//
+//        val channelId = createNotificationChannel(CHANNEL_ID, getString(R.string.channel_name))
+//
+//        val builder = NotificationCompat.Builder(this, channelId)
+//        val notification = builder.setContentIntent(pIntent)
+//            .setContentTitle(getString(R.string.notification_title))
+//            .setContentText(getString(R.string.notification_content))
+//            .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_icon))
+//            .setSmallIcon(R.mipmap.ic_icon)
+//            .build()
+//        startForeground(1, notification)
     }
 
-    private fun createNotificationChannel(channelId: String, channelName: String): String {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
-            channel.lightColor = Color.BLUE
-            channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
-            getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
-        }
-        return channelId
-    }
+//    private fun createNotificationChannel(channelId: String, channelName: String): String {
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+//            channel.lightColor = Color.BLUE
+//            channel.lockscreenVisibility = Notification.VISIBILITY_PRIVATE
+//            getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
+//        }
+//        return channelId
+//    }
 
     fun stop() {
         UnlockReceiver.unRegReceiver(this)

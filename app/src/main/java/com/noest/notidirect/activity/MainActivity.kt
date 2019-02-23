@@ -1,8 +1,10 @@
 package com.noest.notidirect.activity
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Settings
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +16,7 @@ import com.noest.notidirect.adapter.FocusAppAdapter
 import com.noest.notidirect.control.QuickLookControl
 import com.noest.notidirect.utils.LogX
 import com.noest.notidirect.utils.getAppInfo
+import com.noest.notidirect.utils.minicache.MiniCache
 import com.noest.notidirect.utils.notificationListenerEnable
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -21,14 +24,22 @@ class MainActivity : AppCompatActivity() {
 
     val TAG = "MainActivity"
 
+    val kv = MiniCache.getCache("quicklook")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         title = getString(R.string.app_title)
 
-        if (!notificationListenerEnable()) {
-            openNotificationPermissionPage()
+        if (!kv.getBoolean("dont_show_helper")) {
+            AlertDialog.Builder(this)
+                .setTitle("帮助")
+                .setMessage("1、app功能需获取通知权限，点击右上角设置按钮开启通知权限，设备重启后需重新开启\n2、为避免app进程被杀，在当前页面下查看最近任务并锁定该应用\n3、不在列表中的应用在显示通知后会加入到列表中")
+                .setPositiveButton("确定") { _, _ ->
+                    kv.put("dont_show_helper", true)
+                }
+                .show()
         }
 
         val focusInfo = QuickLookControl.getNotiList()
