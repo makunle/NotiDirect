@@ -34,9 +34,16 @@ class MainActivity : AppCompatActivity() {
 
         if (!kv.getBoolean("dont_show_helper")) {
             AlertDialog.Builder(this)
-                .setTitle("帮助")
-                .setMessage("1、app功能需获取通知权限，点击右上角设置按钮开启通知权限，设备重启后需重新开启\n2、为避免app进程被杀，在当前页面下查看最近任务并锁定该应用\n3、不在列表中的应用在显示通知后会加入到列表中")
+                .setTitle("使用说明")
+                .setMessage(
+                    "1、快读正常功能使用需要通知使用权，需点击右上角设置按钮进入通知使用权管理页，并授予快读通知使用权" +
+                            "\n2、为避免快读进程被清理影响功能使用，需在当前页面调出最近任务列表并锁定快读该应用" +
+                            "\n3、不在列表中的应用在显示通知后会加入到列表中" +
+                            "\n4、设备重启后，需同1相同步骤进入通知使用权管理页，关闭然后开启快读的通知使用权"
+                )
                 .setPositiveButton("确定") { _, _ ->
+                }
+                .setNegativeButton("不再提示") { _, _ ->
                     kv.put("dont_show_helper", true)
                 }
                 .show()

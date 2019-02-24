@@ -1,18 +1,9 @@
 package com.noest.notidirect.service
 
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.content.Intent
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.support.v4.app.NotificationCompat
-import com.noest.notidirect.R
-import com.noest.notidirect.activity.MainActivity
+import android.widget.Toast
 import com.noest.notidirect.control.QuickLookControl
 import com.noest.notidirect.receiver.UnlockReceiver
 import com.noest.notidirect.utils.LogX
@@ -54,6 +45,7 @@ class NotificationObserverService : NotificationListenerService() {
     fun start() {
         UnlockReceiver.regReceiver(this)
 
+        Toast.makeText(this, "功能已开启", Toast.LENGTH_SHORT).show()
 //        val intent = Intent(this, MainActivity::class.java)
 //        val pIntent = PendingIntent.getActivity(this, 0, intent, 0)
 //
